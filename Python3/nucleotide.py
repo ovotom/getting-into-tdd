@@ -117,7 +117,22 @@ ccaacattacccggtatgacaaaatgacgccacgtgtcgaataatggtctgaccaatgta
 ggaagtgaaaagataaatat
 '''.replace( '\n', '' )
 
+def r(dict, el):
+    if type(el) == str:
+        if el not in dict:
+            dict[el] = 0
+        dict[el] += 1
+    return dict
+
+def get_list_of_string_slices(dna, length):
+    substrings = []
+    for i in range(len(dna) - length + 1):
+        s = dna[i:i+length]
+        substrings.append(s)
+    return substrings
+
 def tableOfSubsequences( *, dna, length ):
+
     """
     Compute the frequency distribution of subsequences of a given length in a
     stretch of DNA.
@@ -125,4 +140,13 @@ def tableOfSubsequences( *, dna, length ):
     :param length: The length of the subsequences to generate.
     :return: A dictionary mapping subsequence to count (i.e. a bag)
     """
-    pass
+    from functools import reduce
+    # pairs = list(filter(lambda x: len(x) == 2, splitter(dna)) )
+    # print(pairs)
+    ##should be able to do with reduce - come back to this
+    substrings = get_list_of_string_slices(dna,length =length)
+    return reduce(r,substrings ,{})
+    # return reduce(r,dna, {}) #functools.reduce(func, iter, [initial_value])
+
+if __name__ == '__main__':
+    print (tableOfSubsequences(dna = DNA_Sequence,length= 4 ))
